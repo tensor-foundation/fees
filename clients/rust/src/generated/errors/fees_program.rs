@@ -9,13 +9,16 @@ use num_derive::FromPrimitive;
 use thiserror::Error;
 
 #[derive(Clone, Debug, Eq, Error, FromPrimitive, PartialEq)]
-pub enum ProjectNameError {
-    /// 6000 (0x1770) - Invalid authority for account
-    #[error("Invalid authority for account")]
-    InvalidAuthority,
+pub enum FeesProgramError {
+    /// 6000 (0x1770) - Arithmetic error
+    #[error("Arithmetic error")]
+    ArithmeticError,
+    /// 6001 (0x1771) - Number of seeds and accounts do not match
+    #[error("Number of seeds and accounts do not match")]
+    MismatchedSeedsAndAccounts,
 }
 
-impl solana_program::program_error::PrintProgramError for ProjectNameError {
+impl solana_program::program_error::PrintProgramError for FeesProgramError {
     fn print<E>(&self) {
         solana_program::msg!(&self.to_string());
     }

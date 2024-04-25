@@ -5,6 +5,6 @@
 //! [https://github.com/metaplex-foundation/kinobi]
 //!
 
-pub(crate) mod project_name;
+pub(crate) mod fees_program;
 
-pub use self::project_name::ProjectNameError;
+pub use self::fees_program::FeesProgramError;

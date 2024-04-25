@@ -1,6 +1,6 @@
-# Project Name
+# Fees Program
 
-My project description
+Fees PDA and collection program
 
 ## Building
 

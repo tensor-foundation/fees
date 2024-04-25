@@ -5,56 +5,47 @@
 //! [https://github.com/metaplex-foundation/kinobi]
 //!
 
+use crate::generated::types::FeeSeeds;
 use borsh::BorshDeserialize;
 use borsh::BorshSerialize;
 
 /// Accounts.
-pub struct Create {
-    pub address: solana_program::pubkey::Pubkey,
-
-    pub authority: solana_program::pubkey::Pubkey,
-
-    pub payer: solana_program::pubkey::Pubkey,
+pub struct Collect {
+    /// Fee destination account
+    pub treasury: solana_program::pubkey::Pubkey,
 
     pub system_program: solana_program::pubkey::Pubkey,
 }
 
-impl Create {
+impl Collect {
     pub fn instruction(
         &self,
-        args: CreateInstructionArgs,
+        args: CollectInstructionArgs,
     ) -> solana_program::instruction::Instruction {
         self.instruction_with_remaining_accounts(args, &[])
     }
     #[allow(clippy::vec_init_then_push)]
     pub fn instruction_with_remaining_accounts(
         &self,
-        args: CreateInstructionArgs,
+        args: CollectInstructionArgs,
         remaining_accounts: &[solana_program::instruction::AccountMeta],
     ) -> solana_program::instruction::Instruction {
-        let mut accounts = Vec::with_capacity(4 + remaining_accounts.len());
+        let mut accounts = Vec::with_capacity(2 + remaining_accounts.len());
         accounts.push(solana_program::instruction::AccountMeta::new(
-            self.address,
-            true,
-        ));
-        accounts.push(solana_program::instruction::AccountMeta::new_readonly(
-            self.authority,
+            self.treasury,
             false,
-        ));
-        accounts.push(solana_program::instruction::AccountMeta::new(
-            self.payer, true,
         ));
         accounts.push(solana_program::instruction::AccountMeta::new_readonly(
             self.system_program,
             false,
         ));
         accounts.extend_from_slice(remaining_accounts);
-        let mut data = CreateInstructionData::new().try_to_vec().unwrap();
+        let mut data = CollectInstructionData::new().try_to_vec().unwrap();
         let mut args = args.try_to_vec().unwrap();
         data.append(&mut args);
 
         solana_program::instruction::Instruction {
-            program_id: crate::PROJECT_NAME_ID,
+            program_id: crate::FEES_PROGRAM_ID,
             accounts,
             data,
         }
@@ -62,61 +53,46 @@ impl Create {
 }
 
 #[derive(BorshDeserialize, BorshSerialize)]
-struct CreateInstructionData {
+pub struct CollectInstructionData {
     discriminator: [u8; 8],
 }
 
-impl CreateInstructionData {
-    fn new() -> Self {
+impl CollectInstructionData {
+    pub fn new() -> Self {
         Self {
-            discriminator: [24, 30, 200, 40, 5, 28, 7, 119],
+            discriminator: [208, 47, 194, 155, 17, 98, 82, 236],
         }
     }
 }
 
 #[derive(BorshSerialize, BorshDeserialize, Clone, Debug, Eq, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct CreateInstructionArgs {
-    pub arg1: u16,
-    pub arg2: u32,
+pub struct CollectInstructionArgs {
+    pub seeds: Vec<FeeSeeds>,
 }
 
-/// Instruction builder for `Create`.
+/// Instruction builder for `Collect`.
 ///
 /// ### Accounts:
 ///
-///   0. `[writable, signer]` address
-///   1. `[]` authority
-///   2. `[writable, signer]` payer
-///   3. `[optional]` system_program (default to `11111111111111111111111111111111`)
+///   0. `[writable]` treasury
+///   1. `[optional]` system_program (default to `11111111111111111111111111111111`)
 #[derive(Default)]
-pub struct CreateBuilder {
-    address: Option<solana_program::pubkey::Pubkey>,
-    authority: Option<solana_program::pubkey::Pubkey>,
-    payer: Option<solana_program::pubkey::Pubkey>,
+pub struct CollectBuilder {
+    treasury: Option<solana_program::pubkey::Pubkey>,
     system_program: Option<solana_program::pubkey::Pubkey>,
-    arg1: Option<u16>,
-    arg2: Option<u32>,
+    seeds: Option<Vec<FeeSeeds>>,
     __remaining_accounts: Vec<solana_program::instruction::AccountMeta>,
 }
 
-impl CreateBuilder {
+impl CollectBuilder {
     pub fn new() -> Self {
         Self::default()
     }
+    /// Fee destination account
     #[inline(always)]
-    pub fn address(&mut self, address: solana_program::pubkey::Pubkey) -> &mut Self {
-        self.address = Some(address);
-        self
-    }
-    #[inline(always)]
-    pub fn authority(&mut self, authority: solana_program::pubkey::Pubkey) -> &mut Self {
-        self.authority = Some(authority);
-        self
-    }
-    #[inline(always)]
-    pub fn payer(&mut self, payer: solana_program::pubkey::Pubkey) -> &mut Self {
-        self.payer = Some(payer);
+    pub fn treasury(&mut self, treasury: solana_program::pubkey::Pubkey) -> &mut Self {
+        self.treasury = Some(treasury);
         self
     }
     /// `[optional account, default to '11111111111111111111111111111111']`
@@ -126,13 +102,8 @@ impl CreateBuilder {
         self
     }
     #[inline(always)]
-    pub fn arg1(&mut self, arg1: u16) -> &mut Self {
-        self.arg1 = Some(arg1);
-        self
-    }
-    #[inline(always)]
-    pub fn arg2(&mut self, arg2: u32) -> &mut Self {
-        self.arg2 = Some(arg2);
+    pub fn seeds(&mut self, seeds: Vec<FeeSeeds>) -> &mut Self {
+        self.seeds = Some(seeds);
         self
     }
     /// Add an aditional account to the instruction.
@@ -155,61 +126,49 @@ impl CreateBuilder {
     }
     #[allow(clippy::clone_on_copy)]
     pub fn instruction(&self) -> solana_program::instruction::Instruction {
-        let accounts = Create {
-            address: self.address.expect("address is not set"),
-            authority: self.authority.expect("authority is not set"),
-            payer: self.payer.expect("payer is not set"),
+        let accounts = Collect {
+            treasury: self.treasury.expect("treasury is not set"),
             system_program: self
                 .system_program
                 .unwrap_or(solana_program::pubkey!("11111111111111111111111111111111")),
         };
-        let args = CreateInstructionArgs {
-            arg1: self.arg1.clone().expect("arg1 is not set"),
-            arg2: self.arg2.clone().expect("arg2 is not set"),
+        let args = CollectInstructionArgs {
+            seeds: self.seeds.clone().expect("seeds is not set"),
         };
 
         accounts.instruction_with_remaining_accounts(args, &self.__remaining_accounts)
     }
 }
 
-/// `create` CPI accounts.
-pub struct CreateCpiAccounts<'a, 'b> {
-    pub address: &'b solana_program::account_info::AccountInfo<'a>,
-
-    pub authority: &'b solana_program::account_info::AccountInfo<'a>,
-
-    pub payer: &'b solana_program::account_info::AccountInfo<'a>,
+/// `collect` CPI accounts.
+pub struct CollectCpiAccounts<'a, 'b> {
+    /// Fee destination account
+    pub treasury: &'b solana_program::account_info::AccountInfo<'a>,
 
     pub system_program: &'b solana_program::account_info::AccountInfo<'a>,
 }
 
-/// `create` CPI instruction.
-pub struct CreateCpi<'a, 'b> {
+/// `collect` CPI instruction.
+pub struct CollectCpi<'a, 'b> {
     /// The program to invoke.
     pub __program: &'b solana_program::account_info::AccountInfo<'a>,
-
-    pub address: &'b solana_program::account_info::AccountInfo<'a>,
-
-    pub authority: &'b solana_program::account_info::AccountInfo<'a>,
-
-    pub payer: &'b solana_program::account_info::AccountInfo<'a>,
+    /// Fee destination account
+    pub treasury: &'b solana_program::account_info::AccountInfo<'a>,
 
     pub system_program: &'b solana_program::account_info::AccountInfo<'a>,
     /// The arguments for the instruction.
-    pub __args: CreateInstructionArgs,
+    pub __args: CollectInstructionArgs,
 }
 
-impl<'a, 'b> CreateCpi<'a, 'b> {
+impl<'a, 'b> CollectCpi<'a, 'b> {
     pub fn new(
         program: &'b solana_program::account_info::AccountInfo<'a>,
-        accounts: CreateCpiAccounts<'a, 'b>,
-        args: CreateInstructionArgs,
+        accounts: CollectCpiAccounts<'a, 'b>,
+        args: CollectInstructionArgs,
     ) -> Self {
         Self {
             __program: program,
-            address: accounts.address,
-            authority: accounts.authority,
-            payer: accounts.payer,
+            treasury: accounts.treasury,
             system_program: accounts.system_program,
             __args: args,
         }
@@ -247,18 +206,10 @@ impl<'a, 'b> CreateCpi<'a, 'b> {
             bool,
         )],
     ) -> solana_program::entrypoint::ProgramResult {
-        let mut accounts = Vec::with_capacity(4 + remaining_accounts.len());
+        let mut accounts = Vec::with_capacity(2 + remaining_accounts.len());
         accounts.push(solana_program::instruction::AccountMeta::new(
-            *self.address.key,
-            true,
-        ));
-        accounts.push(solana_program::instruction::AccountMeta::new_readonly(
-            *self.authority.key,
+            *self.treasury.key,
             false,
-        ));
-        accounts.push(solana_program::instruction::AccountMeta::new(
-            *self.payer.key,
-            true,
         ));
         accounts.push(solana_program::instruction::AccountMeta::new_readonly(
             *self.system_program.key,
@@ -271,20 +222,18 @@ impl<'a, 'b> CreateCpi<'a, 'b> {
                 is_writable: remaining_account.2,
             })
         });
-        let mut data = CreateInstructionData::new().try_to_vec().unwrap();
+        let mut data = CollectInstructionData::new().try_to_vec().unwrap();
         let mut args = self.__args.try_to_vec().unwrap();
         data.append(&mut args);
 
         let instruction = solana_program::instruction::Instruction {
-            program_id: crate::PROJECT_NAME_ID,
+            program_id: crate::FEES_PROGRAM_ID,
             accounts,
             data,
         };
-        let mut account_infos = Vec::with_capacity(4 + 1 + remaining_accounts.len());
+        let mut account_infos = Vec::with_capacity(2 + 1 + remaining_accounts.len());
         account_infos.push(self.__program.clone());
-        account_infos.push(self.address.clone());
-        account_infos.push(self.authority.clone());
-        account_infos.push(self.payer.clone());
+        account_infos.push(self.treasury.clone());
         account_infos.push(self.system_program.clone());
         remaining_accounts
             .iter()
@@ -298,51 +247,34 @@ impl<'a, 'b> CreateCpi<'a, 'b> {
     }
 }
 
-/// Instruction builder for `Create` via CPI.
+/// Instruction builder for `Collect` via CPI.
 ///
 /// ### Accounts:
 ///
-///   0. `[writable, signer]` address
-///   1. `[]` authority
-///   2. `[writable, signer]` payer
-///   3. `[]` system_program
-pub struct CreateCpiBuilder<'a, 'b> {
-    instruction: Box<CreateCpiBuilderInstruction<'a, 'b>>,
+///   0. `[writable]` treasury
+///   1. `[]` system_program
+pub struct CollectCpiBuilder<'a, 'b> {
+    instruction: Box<CollectCpiBuilderInstruction<'a, 'b>>,
 }
 
-impl<'a, 'b> CreateCpiBuilder<'a, 'b> {
+impl<'a, 'b> CollectCpiBuilder<'a, 'b> {
     pub fn new(program: &'b solana_program::account_info::AccountInfo<'a>) -> Self {
-        let instruction = Box::new(CreateCpiBuilderInstruction {
+        let instruction = Box::new(CollectCpiBuilderInstruction {
             __program: program,
-            address: None,
-            authority: None,
-            payer: None,
+            treasury: None,
             system_program: None,
-            arg1: None,
-            arg2: None,
+            seeds: None,
             __remaining_accounts: Vec::new(),
         });
         Self { instruction }
     }
+    /// Fee destination account
     #[inline(always)]
-    pub fn address(
+    pub fn treasury(
         &mut self,
-        address: &'b solana_program::account_info::AccountInfo<'a>,
+        treasury: &'b solana_program::account_info::AccountInfo<'a>,
     ) -> &mut Self {
-        self.instruction.address = Some(address);
-        self
-    }
-    #[inline(always)]
-    pub fn authority(
-        &mut self,
-        authority: &'b solana_program::account_info::AccountInfo<'a>,
-    ) -> &mut Self {
-        self.instruction.authority = Some(authority);
-        self
-    }
-    #[inline(always)]
-    pub fn payer(&mut self, payer: &'b solana_program::account_info::AccountInfo<'a>) -> &mut Self {
-        self.instruction.payer = Some(payer);
+        self.instruction.treasury = Some(treasury);
         self
     }
     #[inline(always)]
@@ -354,13 +286,8 @@ impl<'a, 'b> CreateCpiBuilder<'a, 'b> {
         self
     }
     #[inline(always)]
-    pub fn arg1(&mut self, arg1: u16) -> &mut Self {
-        self.instruction.arg1 = Some(arg1);
-        self
-    }
-    #[inline(always)]
-    pub fn arg2(&mut self, arg2: u32) -> &mut Self {
-        self.instruction.arg2 = Some(arg2);
+    pub fn seeds(&mut self, seeds: Vec<FeeSeeds>) -> &mut Self {
+        self.instruction.seeds = Some(seeds);
         self
     }
     /// Add an additional account to the instruction.
@@ -404,18 +331,13 @@ impl<'a, 'b> CreateCpiBuilder<'a, 'b> {
         &self,
         signers_seeds: &[&[&[u8]]],
     ) -> solana_program::entrypoint::ProgramResult {
-        let args = CreateInstructionArgs {
-            arg1: self.instruction.arg1.clone().expect("arg1 is not set"),
-            arg2: self.instruction.arg2.clone().expect("arg2 is not set"),
+        let args = CollectInstructionArgs {
+            seeds: self.instruction.seeds.clone().expect("seeds is not set"),
         };
-        let instruction = CreateCpi {
+        let instruction = CollectCpi {
             __program: self.instruction.__program,
 
-            address: self.instruction.address.expect("address is not set"),
-
-            authority: self.instruction.authority.expect("authority is not set"),
-
-            payer: self.instruction.payer.expect("payer is not set"),
+            treasury: self.instruction.treasury.expect("treasury is not set"),
 
             system_program: self
                 .instruction
@@ -430,14 +352,11 @@ impl<'a, 'b> CreateCpiBuilder<'a, 'b> {
     }
 }
 
-struct CreateCpiBuilderInstruction<'a, 'b> {
+struct CollectCpiBuilderInstruction<'a, 'b> {
     __program: &'b solana_program::account_info::AccountInfo<'a>,
-    address: Option<&'b solana_program::account_info::AccountInfo<'a>>,
-    authority: Option<&'b solana_program::account_info::AccountInfo<'a>>,
-    payer: Option<&'b solana_program::account_info::AccountInfo<'a>>,
+    treasury: Option<&'b solana_program::account_info::AccountInfo<'a>>,
     system_program: Option<&'b solana_program::account_info::AccountInfo<'a>>,
-    arg1: Option<u16>,
-    arg2: Option<u32>,
+    seeds: Option<Vec<FeeSeeds>>,
     /// Additional instruction accounts `(AccountInfo, is_writable, is_signer)`.
     __remaining_accounts: Vec<(
         &'b solana_program::account_info::AccountInfo<'a>,

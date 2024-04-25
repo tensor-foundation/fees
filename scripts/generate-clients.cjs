@@ -6,36 +6,43 @@ const clientDir = path.join(__dirname, "..", "clients");
 const idlDir = path.join(__dirname, "..", "program", "idl");
 
 // Instanciate Kinobi.
-const kinobi = k.createFromIdls([
-  path.join(idlDir, "project_name_program.json"),
-]);
+const kinobi = k.createFromIdls([path.join(idlDir, "fees_program.json")]);
 
 // Update programs.
 kinobi.update(
   new k.updateProgramsVisitor({
-    projectNameProgram: { name: "projectName" },
+    feesProgram: { name: "feesProgram" }
   })
 );
 
 // Update accounts.
 kinobi.update(
   k.updateAccountsVisitor({
-    myPdaAccount: {
+    feeVault: {
       seeds: [
-        k.constantPdaSeedNodeFromString("myPdaAccount"),
-        k.programIdPdaSeedNode(),
+        k.constantPdaSeedNodeFromString("fee_vault"),
         k.variablePdaSeedNode(
-          "authority",
-          k.publicKeyTypeNode(),
-          "The address of the authority"
-        ),
-        k.variablePdaSeedNode(
-          "name",
-          k.stringTypeNode(),
-          "The name of the account"
-        ),
-      ],
-    },
+          "shard",
+          k.bytesTypeNode(k.fixedSizeNode(1)),
+          "The shard number, 0-255"
+        )
+      ]
+    }
+  })
+);
+
+// Update instructions.
+kinobi.update(
+  k.updateInstructionsVisitor({
+    collect: {
+      remainingAccounts: [
+        k.instructionRemainingAccountsNode(k.argumentValueNode("vaults"), {
+          isOptional: false,
+          isSigner: false,
+          isWritable: true
+        })
+      ]
+    }
   })
 );
 
@@ -50,6 +57,6 @@ const rustDir = path.join(clientDir, "rust", "src", "generated");
 kinobi.accept(
   k.renderRustVisitor(rustDir, {
     formatCode: true,
-    crateFolder: crateDir,
+    crateFolder: crateDir
   })
 );
