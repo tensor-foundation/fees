@@ -1458,6 +1458,30 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "835a3dc7d1ec9e75e2b5fb4ba75396837112d2060b03f7d43bc1897c7f7211da"
 
 [[package]]
+name = "fees-program"
+version = "0.0.0"
+dependencies = [
+ "assert_matches",
+ "borsh 0.10.3",
+ "num-derive 0.3.3",
+ "num-traits",
+ "serde",
+ "serde_with 3.6.1",
+ "solana-program",
+ "solana-program-test",
+ "solana-sdk",
+ "thiserror",
+]
+
+[[package]]
+name = "fees-program-program"
+version = "0.0.0"
+dependencies = [
+ "anchor-lang",
+ "solana-program",
+]
+
+[[package]]
 name = "filetime"
 version = "0.2.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2751,29 +2775,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2422ad645d89c99f8f3e6b88a9fdeca7fabeac836b1002371c4367c8f984aae"
 dependencies = [
  "unicode-ident",
-]
-
-[[package]]
-name = "project-name"
-version = "0.0.0"
-dependencies = [
- "assert_matches",
- "borsh 0.10.3",
- "num-derive 0.3.3",
- "num-traits",
- "serde",
- "serde_with 3.6.1",
- "solana-program",
- "solana-program-test",
- "solana-sdk",
- "thiserror",
-]
-
-[[package]]
-name = "project-name-program"
-version = "0.0.0"
-dependencies = [
- "anchor-lang",
 ]
 
 [[package]]

@@ -5,6 +5,6 @@
 //! [https://github.com/metaplex-foundation/kinobi]
 //!
 
-pub(crate) mod r#my_data;
+pub(crate) mod r#fee_seeds;
 
-pub use self::r#my_data::*;
+pub use self::r#fee_seeds::*;

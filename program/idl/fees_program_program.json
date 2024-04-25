@@ -1,0 +1,79 @@
+{
+  "version": "0.0.0",
+  "name": "fees_program_program",
+  "instructions": [
+    {
+      "name": "collect",
+      "accounts": [
+        {
+          "name": "treasury",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Fee destination account"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seeds",
+          "type": {
+            "vec": {
+              "defined": "FeeSeeds"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "AmmVault",
+      "type": {
+        "kind": "struct",
+        "fields": []
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "FeeSeeds",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "shard",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "ArithmeticError",
+      "msg": "Arithmetic error"
+    },
+    {
+      "code": 6001,
+      "name": "MismatchedSeedsAndAccounts",
+      "msg": "Number of seeds and accounts do not match"
+    }
+  ],
+  "metadata": {
+    "address": "MyProgram1111111111111111111111111111111111",
+    "origin": "anchor",
+    "binaryVersion": "0.29.0",
+    "libVersion": "0.29.0"
+  }
+}

@@ -1,6 +1,6 @@
-# Contributing to Project Name
+# Contributing to Fees Program
 
-This is a quick guide to help you contribute to Project Name.
+This is a quick guide to help you contribute to Fees Program.
 
 ## Getting started
 

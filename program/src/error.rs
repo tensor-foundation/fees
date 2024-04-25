@@ -1,8 +1,11 @@
 use anchor_lang::prelude::*;
 
 #[error_code]
-pub enum ProjectNameError {
-    /// 0 - Invalid authority
-    #[msg("Invalid authority for account")]
-    InvalidAuthority,
+pub enum FeesProgramError {
+    /// 0 - Arithmetic error
+    #[msg("Arithmetic error")]
+    ArithmeticError,
+    /// 1 - Number of seeds and accounts do not match
+    #[msg("Number of seeds and accounts do not match")]
+    MismatchedSeedsAndAccounts,
 }

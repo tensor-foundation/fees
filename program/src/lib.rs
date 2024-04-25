@@ -4,15 +4,19 @@ pub mod state;
 
 use anchor_lang::prelude::*;
 use instructions::*;
+use state::FeeSeeds;
 
 declare_id!("MyProgram1111111111111111111111111111111111");
 
 #[program]
-pub mod project_name_program {
+pub mod fees_program_program {
 
     use super::*;
 
-    pub fn create(ctx: Context<Create>, arg1: u16, arg2: u32) -> Result<()> {
-        process_create(ctx, arg1, arg2)
+    pub fn collect<'info>(
+        ctx: Context<'_, '_, '_, 'info, Collect<'info>>,
+        seeds: Vec<FeeSeeds>,
+    ) -> Result<()> {
+        process_collect(ctx, &seeds)
     }
 }

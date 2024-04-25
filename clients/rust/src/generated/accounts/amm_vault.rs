@@ -7,54 +7,38 @@
 
 use borsh::BorshDeserialize;
 use borsh::BorshSerialize;
-use solana_program::pubkey::Pubkey;
 
 #[derive(BorshSerialize, BorshDeserialize, Clone, Debug, Eq, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MyPdaAccount {
+pub struct AmmVault {
     pub discriminator: [u8; 8],
-    pub bump: u8,
 }
 
-impl MyPdaAccount {
-    pub const LEN: usize = 9;
+impl AmmVault {
+    pub const LEN: usize = 8;
 
     /// Prefix values used to generate a PDA for this account.
     ///
     /// Values are positional and appear in the following order:
     ///
-    ///   0. `MyPdaAccount::PREFIX`
-    ///   1. `crate::PROJECT_NAME_ID`
-    ///   2. authority (`Pubkey`)
-    ///   3. name (`String`)
-    pub const PREFIX: &'static [u8] = "myPdaAccount".as_bytes();
+    ///   0. `AmmVault::PREFIX`
+    ///   1. shard (`[u8; 1]`)
+    pub const PREFIX: &'static [u8] = "amm_vault".as_bytes();
 
     pub fn create_pda(
-        authority: Pubkey,
-        name: String,
+        shard: [u8; 1],
         bump: u8,
     ) -> Result<solana_program::pubkey::Pubkey, solana_program::pubkey::PubkeyError> {
         solana_program::pubkey::Pubkey::create_program_address(
-            &[
-                "myPdaAccount".as_bytes(),
-                crate::PROJECT_NAME_ID.as_ref(),
-                authority.as_ref(),
-                name.to_string().as_ref(),
-                &[bump],
-            ],
-            &crate::PROJECT_NAME_ID,
+            &["amm_vault".as_bytes(), &shard, &[bump]],
+            &crate::FEES_PROGRAM_ID,
         )
     }
 
-    pub fn find_pda(authority: &Pubkey, name: String) -> (solana_program::pubkey::Pubkey, u8) {
+    pub fn find_pda(shard: [u8; 1]) -> (solana_program::pubkey::Pubkey, u8) {
         solana_program::pubkey::Pubkey::find_program_address(
-            &[
-                "myPdaAccount".as_bytes(),
-                crate::PROJECT_NAME_ID.as_ref(),
-                authority.as_ref(),
-                name.to_string().as_ref(),
-            ],
-            &crate::PROJECT_NAME_ID,
+            &["amm_vault".as_bytes(), &shard],
+            &crate::FEES_PROGRAM_ID,
         )
     }
 
@@ -65,7 +49,7 @@ impl MyPdaAccount {
     }
 }
 
-impl<'a> TryFrom<&solana_program::account_info::AccountInfo<'a>> for MyPdaAccount {
+impl<'a> TryFrom<&solana_program::account_info::AccountInfo<'a>> for AmmVault {
     type Error = std::io::Error;
 
     fn try_from(

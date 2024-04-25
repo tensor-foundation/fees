@@ -9,32 +9,27 @@
 import {
   Address,
   ProgramDerivedAddress,
-  getAddressEncoder,
   getProgramDerivedAddress,
 } from '@solana/addresses';
-import { getStringEncoder } from '@solana/codecs';
+import { getBytesEncoder, getStringEncoder } from '@solana/codecs';
 
-export type MyPdaAccountSeeds = {
-  /** The address of the authority */
-  authority: Address;
-  /** The name of the account */
-  name: string;
+export type AmmVaultSeeds = {
+  /** The shard number, 0-255 */
+  shard: Uint8Array;
 };
 
-export async function findMyPdaAccountPda(
-  seeds: MyPdaAccountSeeds,
+export async function findAmmVaultPda(
+  seeds: AmmVaultSeeds,
   config: { programAddress?: Address | undefined } = {}
 ): Promise<ProgramDerivedAddress> {
   const {
     programAddress = 'MyProgram1111111111111111111111111111111111' as Address<'MyProgram1111111111111111111111111111111111'>,
   } = config;
-  return getProgramDerivedAddress({
+  return await getProgramDerivedAddress({
     programAddress,
     seeds: [
-      getStringEncoder({ size: 'variable' }).encode('myPdaAccount'),
-      getAddressEncoder().encode(programAddress),
-      getAddressEncoder().encode(seeds.authority),
-      getStringEncoder().encode(seeds.name),
+      getStringEncoder({ size: 'variable' }).encode('amm_vault'),
+      getBytesEncoder({ size: 1 }).encode(seeds.shard),
     ],
   });
 }

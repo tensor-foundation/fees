@@ -1,5 +1,16 @@
-pub mod my_account;
-pub mod my_pda_account;
+use anchor_lang::prelude::*;
+use solana_program::pubkey;
 
-pub use my_account::*;
-pub use my_pda_account::*;
+// TODO: replace with actual treasury address.
+pub const FDN_TREASURY: Pubkey = pubkey!("Hnozy7VdXR1ua2FZQyvxRgoCbn2dnpVZh3vZN9BMzDea");
+pub const KEEP_ALIVE_LAMPORTS: u64 = 890880;
+
+#[derive(AnchorSerialize, AnchorDeserialize, Debug, Clone)]
+pub struct FeeSeeds {
+    pub shard: u8,
+    pub bump: u8,
+}
+
+// Dummy account for the AMM vault, so we can derive seeds for it.
+#[account]
+pub struct AmmVault {}
