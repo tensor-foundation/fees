@@ -6,10 +6,10 @@ use anchor_lang::prelude::*;
 use instructions::*;
 use state::FeeSeeds;
 
-declare_id!("HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2");
+declare_id!("TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A");
 
 #[program]
-pub mod fees_program_program {
+pub mod fees_program {
 
     use super::*;
 

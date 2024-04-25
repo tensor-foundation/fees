@@ -33,120 +33,123 @@ import {
   getU8Encoder,
   mapEncoder,
 } from '@solana/codecs';
-import { AmmVaultSeeds, findAmmVaultPda } from '../pdas';
+import { FeeVaultSeeds, findFeeVaultPda } from '../pdas';
 
-export type AmmVault<TAddress extends string = string> = Account<
-  AmmVaultAccountData,
+export type FeeVault<TAddress extends string = string> = Account<
+  FeeVaultAccountData,
   TAddress
 >;
 
-export type MaybeAmmVault<TAddress extends string = string> = MaybeAccount<
-  AmmVaultAccountData,
+export type MaybeFeeVault<TAddress extends string = string> = MaybeAccount<
+  FeeVaultAccountData,
   TAddress
 >;
 
-export type AmmVaultAccountData = { discriminator: Array<number> };
+export type FeeVaultAccountData = { discriminator: Array<number> };
 
-export type AmmVaultAccountDataArgs = {};
+export type FeeVaultAccountDataArgs = {};
 
-export function getAmmVaultAccountDataEncoder(): Encoder<AmmVaultAccountDataArgs> {
+export function getFeeVaultAccountDataEncoder(): Encoder<FeeVaultAccountDataArgs> {
   return mapEncoder(
     getStructEncoder([
       ['discriminator', getArrayEncoder(getU8Encoder(), { size: 8 })],
     ]),
-    (value) => ({ ...value, discriminator: [21, 36, 95, 63, 199, 96, 104, 49] })
+    (value) => ({
+      ...value,
+      discriminator: [192, 178, 69, 232, 58, 149, 157, 132],
+    })
   );
 }
 
-export function getAmmVaultAccountDataDecoder(): Decoder<AmmVaultAccountData> {
+export function getFeeVaultAccountDataDecoder(): Decoder<FeeVaultAccountData> {
   return getStructDecoder([
     ['discriminator', getArrayDecoder(getU8Decoder(), { size: 8 })],
   ]);
 }
 
-export function getAmmVaultAccountDataCodec(): Codec<
-  AmmVaultAccountDataArgs,
-  AmmVaultAccountData
+export function getFeeVaultAccountDataCodec(): Codec<
+  FeeVaultAccountDataArgs,
+  FeeVaultAccountData
 > {
   return combineCodec(
-    getAmmVaultAccountDataEncoder(),
-    getAmmVaultAccountDataDecoder()
+    getFeeVaultAccountDataEncoder(),
+    getFeeVaultAccountDataDecoder()
   );
 }
 
-export function decodeAmmVault<TAddress extends string = string>(
+export function decodeFeeVault<TAddress extends string = string>(
   encodedAccount: EncodedAccount<TAddress>
-): AmmVault<TAddress>;
-export function decodeAmmVault<TAddress extends string = string>(
+): FeeVault<TAddress>;
+export function decodeFeeVault<TAddress extends string = string>(
   encodedAccount: MaybeEncodedAccount<TAddress>
-): MaybeAmmVault<TAddress>;
-export function decodeAmmVault<TAddress extends string = string>(
+): MaybeFeeVault<TAddress>;
+export function decodeFeeVault<TAddress extends string = string>(
   encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>
-): AmmVault<TAddress> | MaybeAmmVault<TAddress> {
+): FeeVault<TAddress> | MaybeFeeVault<TAddress> {
   return decodeAccount(
     encodedAccount as MaybeEncodedAccount<TAddress>,
-    getAmmVaultAccountDataDecoder()
+    getFeeVaultAccountDataDecoder()
   );
 }
 
-export async function fetchAmmVault<TAddress extends string = string>(
+export async function fetchFeeVault<TAddress extends string = string>(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
   config?: FetchAccountConfig
-): Promise<AmmVault<TAddress>> {
-  const maybeAccount = await fetchMaybeAmmVault(rpc, address, config);
+): Promise<FeeVault<TAddress>> {
+  const maybeAccount = await fetchMaybeFeeVault(rpc, address, config);
   assertAccountExists(maybeAccount);
   return maybeAccount;
 }
 
-export async function fetchMaybeAmmVault<TAddress extends string = string>(
+export async function fetchMaybeFeeVault<TAddress extends string = string>(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
   config?: FetchAccountConfig
-): Promise<MaybeAmmVault<TAddress>> {
+): Promise<MaybeFeeVault<TAddress>> {
   const maybeAccount = await fetchEncodedAccount(rpc, address, config);
-  return decodeAmmVault(maybeAccount);
+  return decodeFeeVault(maybeAccount);
 }
 
-export async function fetchAllAmmVault(
+export async function fetchAllFeeVault(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
   config?: FetchAccountsConfig
-): Promise<AmmVault[]> {
-  const maybeAccounts = await fetchAllMaybeAmmVault(rpc, addresses, config);
+): Promise<FeeVault[]> {
+  const maybeAccounts = await fetchAllMaybeFeeVault(rpc, addresses, config);
   assertAccountsExist(maybeAccounts);
   return maybeAccounts;
 }
 
-export async function fetchAllMaybeAmmVault(
+export async function fetchAllMaybeFeeVault(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
   config?: FetchAccountsConfig
-): Promise<MaybeAmmVault[]> {
+): Promise<MaybeFeeVault[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
-  return maybeAccounts.map((maybeAccount) => decodeAmmVault(maybeAccount));
+  return maybeAccounts.map((maybeAccount) => decodeFeeVault(maybeAccount));
 }
 
-export function getAmmVaultSize(): number {
+export function getFeeVaultSize(): number {
   return 8;
 }
 
-export async function fetchAmmVaultFromSeeds(
+export async function fetchFeeVaultFromSeeds(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
-  seeds: AmmVaultSeeds,
+  seeds: FeeVaultSeeds,
   config: FetchAccountConfig & { programAddress?: Address } = {}
-): Promise<AmmVault> {
-  const maybeAccount = await fetchMaybeAmmVaultFromSeeds(rpc, seeds, config);
+): Promise<FeeVault> {
+  const maybeAccount = await fetchMaybeFeeVaultFromSeeds(rpc, seeds, config);
   assertAccountExists(maybeAccount);
   return maybeAccount;
 }
 
-export async function fetchMaybeAmmVaultFromSeeds(
+export async function fetchMaybeFeeVaultFromSeeds(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
-  seeds: AmmVaultSeeds,
+  seeds: FeeVaultSeeds,
   config: FetchAccountConfig & { programAddress?: Address } = {}
-): Promise<MaybeAmmVault> {
+): Promise<MaybeFeeVault> {
   const { programAddress, ...fetchConfig } = config;
-  const [address] = await findAmmVaultPda(seeds, { programAddress });
-  return await fetchMaybeAmmVault(rpc, address, fetchConfig);
+  const [address] = await findFeeVaultPda(seeds, { programAddress });
+  return await fetchMaybeFeeVault(rpc, address, fetchConfig);
 }

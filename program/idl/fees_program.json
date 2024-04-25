@@ -1,6 +1,6 @@
 {
   "version": "0.0.0",
-  "name": "fees_program_program",
+  "name": "fees_program",
   "instructions": [
     {
       "name": "collect",
@@ -33,7 +33,7 @@
   ],
   "accounts": [
     {
-      "name": "AmmVault",
+      "name": "FeeVault",
       "type": {
         "kind": "struct",
         "fields": []
@@ -71,7 +71,7 @@
     }
   ],
   "metadata": {
-    "address": "HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2",
+    "address": "TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A",
     "origin": "anchor",
     "binaryVersion": "0.29.0",
     "libVersion": "0.29.0"

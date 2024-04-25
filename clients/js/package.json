@@ -1,5 +1,5 @@
 {
-  "name": "@tensor-foundation/fees-program",
+  "name": "@tensor-foundation/fees",
   "version": "0.0.0",
   "description": "Fees PDA and collection program",
   "sideEffects": false,
@@ -32,7 +32,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "homepage": "https://github.com/tensor-foundation",
-  "repository": "https://github.com/tensor-foundation/fees-program.git",
+  "repository": "https://github.com/tensor-foundation/fees.git",
   "author": "Tensor Protocol Foundation <maintainers.foundation>",
   "license": "Apache-2.0",
   "dependencies": {

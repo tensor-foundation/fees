@@ -13,22 +13,22 @@ import {
 } from '@solana/addresses';
 import { getBytesEncoder, getStringEncoder } from '@solana/codecs';
 
-export type AmmVaultSeeds = {
+export type FeeVaultSeeds = {
   /** The shard number, 0-255 */
   shard: Uint8Array;
 };
 
-export async function findAmmVaultPda(
-  seeds: AmmVaultSeeds,
+export async function findFeeVaultPda(
+  seeds: FeeVaultSeeds,
   config: { programAddress?: Address | undefined } = {}
 ): Promise<ProgramDerivedAddress> {
   const {
-    programAddress = 'HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2' as Address<'HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2'>,
+    programAddress = 'TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A' as Address<'TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A'>,
   } = config;
   return await getProgramDerivedAddress({
     programAddress,
     seeds: [
-      getStringEncoder({ size: 'variable' }).encode('amm_vault'),
+      getStringEncoder({ size: 'variable' }).encode('fee_vault'),
       getBytesEncoder({ size: 1 }).encode(seeds.shard),
     ],
   });

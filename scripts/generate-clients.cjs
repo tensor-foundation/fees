@@ -6,23 +6,21 @@ const clientDir = path.join(__dirname, "..", "clients");
 const idlDir = path.join(__dirname, "..", "program", "idl");
 
 // Instanciate Kinobi.
-const kinobi = k.createFromIdls([
-  path.join(idlDir, "fees_program_program.json")
-]);
+const kinobi = k.createFromIdls([path.join(idlDir, "fees_program.json")]);
 
 // Update programs.
 kinobi.update(
   new k.updateProgramsVisitor({
-    feesProgramProgram: { name: "feesProgram" }
+    feesProgram: { name: "feesProgram" }
   })
 );
 
 // Update accounts.
 kinobi.update(
   k.updateAccountsVisitor({
-    ammVault: {
+    feeVault: {
       seeds: [
-        k.constantPdaSeedNodeFromString("amm_vault"),
+        k.constantPdaSeedNodeFromString("fee_vault"),
         k.variablePdaSeedNode(
           "shard",
           k.bytesTypeNode(k.fixedSizeNode(1)),

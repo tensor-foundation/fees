@@ -10,7 +10,7 @@ import {
 } from '@solana/web3.js';
 import test from 'ava';
 import {
-  findAmmVaultPda,
+  findFeeVaultPda,
   FeeSeeds,
   getCollectInstruction,
 } from '../src/index.js';
@@ -28,7 +28,7 @@ const getShardNumber = (address: Address) => {
 const ONE_SOL = 10n ** 9n;
 const KEEP_ALIVE_LAMPORTS = 890880n;
 
-test('it can collect fees from sharded AMM fee accounts', async (t) => {
+test('it can collect fees from sharded fee accounts', async (t) => {
   const client = createDefaultSolanaClient();
   const payer = await generateKeyPairSignerWithSol(client);
   const treasury = address('Hnozy7VdXR1ua2FZQyvxRgoCbn2dnpVZh3vZN9BMzDea');
@@ -39,7 +39,7 @@ test('it can collect fees from sharded AMM fee accounts', async (t) => {
   const numFeeAccounts = 8;
 
   // Arbitrary keypairs to use to get the sharded fee accounts.
-  // In AMM these would be actual NFT mint accounts.
+  // In AMM, for example, these would be actual NFT mint accounts.
   const mints = await Promise.all(
     Array.from(
       { length: numFeeAccounts },
@@ -52,11 +52,11 @@ test('it can collect fees from sharded AMM fee accounts', async (t) => {
     new Set(mints.map((mint) => getShardNumber(mint.address)))
   );
 
-  // Derive some fee accounts for AMM.
+  // Derive some fee accounts.
   const pdas = await Promise.all(
     shardNumbers.map(
       async (shard) =>
-        await findAmmVaultPda({ shard: Uint8Array.from([shard]) })
+        await findFeeVaultPda({ shard: Uint8Array.from([shard]) })
     )
   );
 

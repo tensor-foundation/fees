@@ -48,7 +48,7 @@ pub fn process_collect<'info>(
         let shard = &[fee_seeds.shard];
         let bump = &[fee_seeds.bump];
 
-        let signers_seeds: &[&[&[u8]]] = &[&[b"amm_vault", shard, bump]];
+        let signers_seeds: &[&[&[u8]]] = &[&[b"fee_vault", shard, bump]];
 
         let lamports = account
             .lamports()

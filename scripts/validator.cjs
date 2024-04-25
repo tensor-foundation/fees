@@ -12,7 +12,7 @@ module.exports = {
     programs: [
       {
         label: "Fees Program",
-        programId: "HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2",
+        programId: "TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A",
         deployPath: getProgram("fees_program.so")
       },
       // Below are external programs that should be included in the local validator.

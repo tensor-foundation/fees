@@ -5,6 +5,6 @@
 //! [https://github.com/metaplex-foundation/kinobi]
 //!
 
-pub(crate) mod r#amm_vault;
+pub(crate) mod r#fee_vault;
 
-pub use self::r#amm_vault::*;
+pub use self::r#fee_vault::*;

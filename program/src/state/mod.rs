@@ -11,6 +11,6 @@ pub struct FeeSeeds {
     pub bump: u8,
 }
 
-// Dummy account for the AMM vault, so we can derive seeds for it.
+// Dummy account for the Fee vault, so we can derive seeds for it.
 #[account]
-pub struct AmmVault {}
+pub struct FeeVault {}

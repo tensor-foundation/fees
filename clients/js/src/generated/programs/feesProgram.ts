@@ -17,10 +17,10 @@ import { ParsedCollectInstruction } from '../instructions';
 import { memcmp } from '../shared';
 
 export const FEES_PROGRAM_PROGRAM_ADDRESS =
-  'HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2' as Address<'HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2'>;
+  'TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A' as Address<'TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A'>;
 
 export type FeesProgramProgram =
-  Program<'HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2'> &
+  Program<'TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A'> &
     ProgramWithErrors<FeesProgramProgramErrorCode, FeesProgramProgramError>;
 
 export function getFeesProgramProgram(): FeesProgramProgram {
@@ -34,15 +34,15 @@ export function getFeesProgramProgram(): FeesProgramProgram {
 }
 
 export enum FeesProgramAccount {
-  AmmVault,
+  FeeVault,
 }
 
 export function identifyFeesProgramAccount(
   account: { data: Uint8Array } | Uint8Array
 ): FeesProgramAccount {
   const data = account instanceof Uint8Array ? account : account.data;
-  if (memcmp(data, new Uint8Array([21, 36, 95, 63, 199, 96, 104, 49]), 0)) {
-    return FeesProgramAccount.AmmVault;
+  if (memcmp(data, new Uint8Array([192, 178, 69, 232, 58, 149, 157, 132]), 0)) {
+    return FeesProgramAccount.FeeVault;
   }
   throw new Error(
     'The provided account could not be identified as a feesProgram account.'
@@ -67,7 +67,7 @@ export function identifyFeesProgramInstruction(
 }
 
 export type ParsedFeesProgramInstruction<
-  TProgram extends string = 'HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2',
+  TProgram extends string = 'TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A',
 > = {
   instructionType: FeesProgramInstruction.Collect;
 } & ParsedCollectInstruction<TProgram>;

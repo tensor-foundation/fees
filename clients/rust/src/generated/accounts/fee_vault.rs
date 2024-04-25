@@ -10,34 +10,34 @@ use borsh::BorshSerialize;
 
 #[derive(BorshSerialize, BorshDeserialize, Clone, Debug, Eq, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct AmmVault {
+pub struct FeeVault {
     pub discriminator: [u8; 8],
 }
 
-impl AmmVault {
+impl FeeVault {
     pub const LEN: usize = 8;
 
     /// Prefix values used to generate a PDA for this account.
     ///
     /// Values are positional and appear in the following order:
     ///
-    ///   0. `AmmVault::PREFIX`
+    ///   0. `FeeVault::PREFIX`
     ///   1. shard (`[u8; 1]`)
-    pub const PREFIX: &'static [u8] = "amm_vault".as_bytes();
+    pub const PREFIX: &'static [u8] = "fee_vault".as_bytes();
 
     pub fn create_pda(
         shard: [u8; 1],
         bump: u8,
     ) -> Result<solana_program::pubkey::Pubkey, solana_program::pubkey::PubkeyError> {
         solana_program::pubkey::Pubkey::create_program_address(
-            &["amm_vault".as_bytes(), &shard, &[bump]],
+            &["fee_vault".as_bytes(), &shard, &[bump]],
             &crate::FEES_PROGRAM_ID,
         )
     }
 
     pub fn find_pda(shard: [u8; 1]) -> (solana_program::pubkey::Pubkey, u8) {
         solana_program::pubkey::Pubkey::find_program_address(
-            &["amm_vault".as_bytes(), &shard],
+            &["fee_vault".as_bytes(), &shard],
             &crate::FEES_PROGRAM_ID,
         )
     }
@@ -49,7 +49,7 @@ impl AmmVault {
     }
 }
 
-impl<'a> TryFrom<&solana_program::account_info::AccountInfo<'a>> for AmmVault {
+impl<'a> TryFrom<&solana_program::account_info::AccountInfo<'a>> for FeeVault {
     type Error = std::io::Error;
 
     fn try_from(
