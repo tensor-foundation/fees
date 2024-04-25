@@ -8,4 +8,4 @@
 use solana_program::{pubkey, pubkey::Pubkey};
 
 /// `fees_program` program ID.
-pub const FEES_PROGRAM_ID: Pubkey = pubkey!("MyProgram1111111111111111111111111111111111");
+pub const FEES_PROGRAM_ID: Pubkey = pubkey!("HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2");

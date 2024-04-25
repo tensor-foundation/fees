@@ -12,8 +12,8 @@ module.exports = {
     programs: [
       {
         label: "Fees Program",
-        programId: "MyProgram1111111111111111111111111111111111",
-        deployPath: getProgram("fees_program_program.so"),
+        programId: "HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2",
+        deployPath: getProgram("fees_program.so")
       },
       // Below are external programs that should be included in the local validator.
       // You may configure which ones to fetch from the cluster when building
@@ -21,8 +21,8 @@ module.exports = {
       {
         label: "SPL Noop",
         programId: "noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV",
-        deployPath: getProgram("spl_noop.so"),
-      },
-    ],
-  },
+        deployPath: getProgram("spl_noop.so")
+      }
+    ]
+  }
 };

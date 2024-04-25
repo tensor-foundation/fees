@@ -6,7 +6,7 @@ use anchor_lang::solana_program::{program::invoke_signed, system_instruction};
 use crate::state::FeeSeeds;
 use crate::{
     error::FeesProgramError,
-    state::{FDN_TREASURY, KEEP_ALIVE_LAMPORTS},
+    state::{KEEP_ALIVE_LAMPORTS, TREASURY},
 };
 
 /// Permissionless fee crank that collects fees from fee vault accounts and sends them
@@ -17,7 +17,7 @@ pub struct Collect<'info> {
     /// CHECK: This is hard-coded to the Tensor Foundation's treasury account.
     #[account(
         mut,
-        address = FDN_TREASURY,
+        address = TREASURY,
     )]
     pub treasury: UncheckedAccount<'info>,
 

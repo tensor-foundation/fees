@@ -8,8 +8,8 @@ const programDir = path.join(__dirname, "..");
 generateIdl({
   generator: "anchor",
   programName: "fees_program_program",
-  programId: "MyProgram1111111111111111111111111111111111",
+  programId: "HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2",
   idlDir,
   binaryInstallDir,
-  programDir: path.join(programDir, "program"),
+  programDir: path.join(programDir, "program")
 });

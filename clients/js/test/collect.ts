@@ -31,7 +31,10 @@ const KEEP_ALIVE_LAMPORTS = 890880n;
 test('it can collect fees from sharded AMM fee accounts', async (t) => {
   const client = createDefaultSolanaClient();
   const payer = await generateKeyPairSignerWithSol(client);
-  const fdnTreasury = address('Hnozy7VdXR1ua2FZQyvxRgoCbn2dnpVZh3vZN9BMzDea');
+  const treasury = address('Hnozy7VdXR1ua2FZQyvxRgoCbn2dnpVZh3vZN9BMzDea');
+
+  const treasuryStartBalance = (await client.rpc.getBalance(treasury).send())
+    .value;
 
   const numFeeAccounts = 8;
 
@@ -44,7 +47,10 @@ test('it can collect fees from sharded AMM fee accounts', async (t) => {
     )
   );
 
-  const shardNumbers = mints.map((mint) => getShardNumber(mint.address));
+  // Remove duplicates before we derive the PDAs.
+  const shardNumbers = Array.from(
+    new Set(mints.map((mint) => getShardNumber(mint.address)))
+  );
 
   // Derive some fee accounts for AMM.
   const pdas = await Promise.all(
@@ -62,20 +68,23 @@ test('it can collect fees from sharded AMM fee accounts', async (t) => {
 
   // Fund the accounts
   await Promise.all(
-    pdas.map(
-      async (pda) =>
-        await airdropFactory(client)({
-          recipientAddress: pda[0],
-          lamports: lamports(ONE_SOL + KEEP_ALIVE_LAMPORTS),
-          commitment: 'confirmed',
-        })
-    )
+    pdas.map(async (pda) => {
+      const vaultBalance = (await client.rpc.getBalance(pda[0]).send()).value;
+
+      return await airdropFactory(client)({
+        recipientAddress: pda[0],
+        lamports: lamports(ONE_SOL + KEEP_ALIVE_LAMPORTS - vaultBalance),
+        commitment: 'confirmed',
+      });
+    })
   );
 
+  const vaults = pdas.map((pda) => pda[0]);
+
   const collectIx = getCollectInstruction({
-    treasury: fdnTreasury,
+    treasury,
     seeds,
-    vaults: pdas.map((pda) => pda[0]),
+    vaults,
   });
 
   await pipe(
@@ -84,12 +93,17 @@ test('it can collect fees from sharded AMM fee accounts', async (t) => {
     (tx) => signAndSendTransaction(client, tx)
   );
 
-  const treasuryBalance = (await client.rpc.getBalance(fdnTreasury).send())
-    .value;
+  const treasuryBalance = (await client.rpc.getBalance(treasury).send()).value;
 
-  // Check that the treasury balance is correct.
+  for (const v of vaults) {
+    const balance = (await client.rpc.getBalance(v).send()).value;
+    // Only keep-alive state bond left.
+    t.assert(balance === KEEP_ALIVE_LAMPORTS, 'Vault balance is correct');
+  }
+
+  // Check that the treasury balance is the correct amount higher than the start balance.
   t.assert(
-    treasuryBalance === ONE_SOL * BigInt(numFeeAccounts),
+    treasuryBalance === treasuryStartBalance + ONE_SOL * BigInt(vaults.length),
     'Treasury balance is correct'
   );
 });

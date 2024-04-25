@@ -23,7 +23,7 @@ export async function findAmmVaultPda(
   config: { programAddress?: Address | undefined } = {}
 ): Promise<ProgramDerivedAddress> {
   const {
-    programAddress = 'MyProgram1111111111111111111111111111111111' as Address<'MyProgram1111111111111111111111111111111111'>,
+    programAddress = 'HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2' as Address<'HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2'>,
   } = config;
   return await getProgramDerivedAddress({
     programAddress,

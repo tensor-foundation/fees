@@ -6,7 +6,7 @@ use anchor_lang::prelude::*;
 use instructions::*;
 use state::FeeSeeds;
 
-declare_id!("MyProgram1111111111111111111111111111111111");
+declare_id!("HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2");
 
 #[program]
 pub mod fees_program_program {

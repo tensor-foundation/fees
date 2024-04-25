@@ -17,10 +17,10 @@ import { ParsedCollectInstruction } from '../instructions';
 import { memcmp } from '../shared';
 
 export const FEES_PROGRAM_PROGRAM_ADDRESS =
-  'MyProgram1111111111111111111111111111111111' as Address<'MyProgram1111111111111111111111111111111111'>;
+  'HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2' as Address<'HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2'>;
 
 export type FeesProgramProgram =
-  Program<'MyProgram1111111111111111111111111111111111'> &
+  Program<'HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2'> &
     ProgramWithErrors<FeesProgramProgramErrorCode, FeesProgramProgramError>;
 
 export function getFeesProgramProgram(): FeesProgramProgram {
@@ -67,7 +67,7 @@ export function identifyFeesProgramInstruction(
 }
 
 export type ParsedFeesProgramInstruction<
-  TProgram extends string = 'MyProgram1111111111111111111111111111111111',
+  TProgram extends string = 'HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2',
 > = {
   instructionType: FeesProgramInstruction.Collect;
 } & ParsedCollectInstruction<TProgram>;

@@ -6,7 +6,7 @@ Fees PDA and collection program.
 
 This project contains the following programs:
 
-- [Fees Program](./programs/fees-program/README.md) `MyProgram1111111111111111111111111111111111`
+- [Fees Program](./programs/fees-program/README.md) `HNs9y7yocDV3FU3s5C21mz4MTkzcoScYqxNesjWzcHk2`
 
 You will need a Rust version compatible with BPF to compile the program, currently we recommend using Rust 1.75.0.
 
