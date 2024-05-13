@@ -1,17 +1,17 @@
 import { generateKeyPairSigner } from '@solana/signers';
 import {
-  appendTransactionInstruction,
-  pipe,
-  address,
   Address,
-  getAddressEncoder,
+  address,
   airdropFactory,
+  appendTransactionInstruction,
+  getAddressEncoder,
   lamports,
+  pipe,
 } from '@solana/web3.js';
 import test from 'ava';
 import {
-  findFeeVaultPda,
   FeeSeeds,
+  findFeeVaultPda,
   getCollectInstruction,
 } from '../src/index.js';
 import {
@@ -36,10 +36,10 @@ test('it can collect fees from sharded fee accounts', async (t) => {
   const treasuryStartBalance = (await client.rpc.getBalance(treasury).send())
     .value;
 
-  const numFeeAccounts = 8;
+  const numFeeAccounts = 10;
 
   // Arbitrary keypairs to use to get the sharded fee accounts.
-  // In AMM, for example, these would be actual NFT mint accounts.
+  // In AMM, for example, these would be actual pool accounts.
   const mints = await Promise.all(
     Array.from(
       { length: numFeeAccounts },

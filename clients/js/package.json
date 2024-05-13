@@ -1,6 +1,6 @@
 {
   "name": "@tensor-foundation/fees",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Fees PDA and collection program",
   "sideEffects": false,
   "module": "./dist/src/index.js",
@@ -70,5 +70,5 @@
       }
     }
   },
-  "packageManager": "pnpm@9.0.6"
+  "packageManager": "pnpm@9.1.0"
 }
