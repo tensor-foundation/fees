@@ -1,16 +1,8 @@
 import {
   KeyPairSigner,
-  TransactionSigner,
   createSignerFromKeyPair,
   generateKeyPairSigner,
-  setTransactionFeePayerSigner,
-  signTransactionWithSigners,
-} from '@solana/signers';
-import {
   Address,
-  Commitment,
-  CompilableTransaction,
-  ITransactionWithBlockhashLifetime,
   Rpc,
   RpcSubscriptions,
   SolanaRpcApi,
@@ -19,18 +11,11 @@ import {
   createPrivateKeyFromBytes,
   createSolanaRpc,
   createSolanaRpcSubscriptions,
-  createTransaction,
-  getSignatureFromTransaction,
   lamports,
-  pipe,
-  sendAndConfirmTransactionFactory,
-  setTransactionLifetimeUsingBlockhash,
 } from '@solana/web3.js';
-
-type Client = {
-  rpc: Rpc<SolanaRpcApi>;
-  rpcSubscriptions: RpcSubscriptions<SolanaRpcSubscriptionsApi>;
-};
+import {
+  Client
+} from '@tensor-foundation/test-helpers';
 
 export const createDefaultSolanaClient = (): Client => {
   const rpc = createSolanaRpc('http://127.0.0.1:8899');
@@ -74,33 +59,6 @@ export const fundWalletWithSol = async (
     lamports: lamports(putativeLamports),
     commitment: 'confirmed',
   });
-};
-
-export const createDefaultTransaction = async (
-  client: Client,
-  feePayer: TransactionSigner
-) => {
-  const { value: latestBlockhash } = await client.rpc
-    .getLatestBlockhash()
-    .send();
-  return pipe(
-    createTransaction({ version: 0 }),
-    (tx) => setTransactionFeePayerSigner(feePayer, tx),
-    (tx) => setTransactionLifetimeUsingBlockhash(latestBlockhash, tx)
-  );
-};
-
-export const signAndSendTransaction = async (
-  client: Client,
-  transaction: CompilableTransaction & ITransactionWithBlockhashLifetime,
-  commitment: Commitment = 'confirmed'
-) => {
-  const signedTransaction = await signTransactionWithSigners(transaction);
-  const signature = getSignatureFromTransaction(signedTransaction);
-  await sendAndConfirmTransactionFactory(client)(signedTransaction, {
-    commitment,
-  });
-  return signature;
 };
 
 export const getBalance = async (client: Client, address: Address) =>
