@@ -76,10 +76,10 @@ jobs:
         shell: bash
         run: pnpm programs:build
 
-      - name: Upload program builds
+      - name: Upload programs build
         uses: actions/upload-artifact@v4
         with:
-          name: program-builds
+          name: programs-build
           # First wildcard ensures exported paths are consistently under the programs folder.
           path: ./targe*/deploy/*.so
           if-no-files-found: error

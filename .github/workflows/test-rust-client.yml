@@ -46,7 +46,7 @@ jobs:
           folder: ./clients/rust
           key: rust-client-test
 
-      - name: Download program builds
+      - name: Download programs build
         uses: actions/download-artifact@v4
         with:
           name: programs-build
