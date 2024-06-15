@@ -6,6 +6,10 @@ readme = "./README.md"
 license-file = "../LICENSE"
 publish = false
 
+[package.metadata.solana]
+program-id = "TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A"
+program-dependencies = []
+
 [lib]
 crate-type = ["cdylib", "lib"]
 

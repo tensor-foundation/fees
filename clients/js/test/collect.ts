@@ -1,25 +1,23 @@
-import { generateKeyPairSigner } from '@solana/signers';
 import {
+  generateKeyPairSigner,
   Address,
   address,
   airdropFactory,
-  appendTransactionInstruction,
+  appendTransactionMessageInstruction,
   getAddressEncoder,
   lamports,
   pipe,
 } from '@solana/web3.js';
 import test from 'ava';
-import {
-  FeeSeeds,
-  findFeeVaultPda,
-  getCollectInstruction,
-} from '../src/index.js';
+import { FeeSeeds, findFeeVaultPda, getCollectInstruction } from '../src';
 import {
   createDefaultSolanaClient,
-  createDefaultTransaction,
   generateKeyPairSignerWithSol,
-  signAndSendTransaction,
 } from './_setup.js';
+import {
+  createDefaultTransaction,
+  signAndSendTransaction,
+} from '@tensor-foundation/test-helpers';
 
 const getShardNumber = (address: Address) => {
   return getAddressEncoder().encode(address)[31];
@@ -89,7 +87,7 @@ test('it can collect fees from sharded fee accounts', async (t) => {
 
   await pipe(
     await createDefaultTransaction(client, payer),
-    (tx) => appendTransactionInstruction(collectIx, tx),
+    (tx) => appendTransactionMessageInstruction(collectIx, tx),
     (tx) => signAndSendTransaction(client, tx)
   );
 
