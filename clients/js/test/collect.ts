@@ -9,11 +9,7 @@ import {
   pipe,
 } from '@solana/web3.js';
 import test from 'ava';
-import {
-  FeeSeeds,
-  findFeeVaultPda,
-  getCollectInstruction,
-} from '../src';
+import { FeeSeeds, findFeeVaultPda, getCollectInstruction } from '../src';
 import {
   createDefaultSolanaClient,
   generateKeyPairSignerWithSol,

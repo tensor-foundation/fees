@@ -13,9 +13,7 @@ import {
   createSolanaRpcSubscriptions,
   lamports,
 } from '@solana/web3.js';
-import {
-  Client
-} from '@tensor-foundation/test-helpers';
+import { Client } from '@tensor-foundation/test-helpers';
 
 export const createDefaultSolanaClient = (): Client => {
   const rpc = createSolanaRpc('http://127.0.0.1:8899');
