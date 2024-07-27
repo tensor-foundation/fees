@@ -43,7 +43,7 @@ jobs:
           matrix: ${{ env.PROGRAMS }}
           changes: ${{ steps.changes.outputs.changes }}
           suffix: _binary
-  
+
   lint_js:
     name: Lint (JavaScript)
     if: ${{ needs.changes.outputs.js_client == 'true' }}
@@ -63,11 +63,6 @@ jobs:
           cache: ${{ env.CACHE }}
           dependencies: false
 
-      - name: Configure npm authentication
-        run: |
-          echo "@tensor-foundation:registry=https://npm.pkg.github.com" > ~/.npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
-          
       - uses: tensor-foundation/actions/install-node-dependencies@v2
         with:
           folder: ./clients/js
@@ -183,7 +178,7 @@ jobs:
         if: env.CACHE == 'true'
         uses: tensor-foundation/actions/cache-crate@v2
         with:
-          folder: '.'
+          folder: "."
           key: programs
 
       - name: Install Node.js

@@ -48,7 +48,7 @@ test('it can collect fees from sharded fee accounts', async (t) => {
     new Set(mints.map((mint) => getShardNumber(mint.address)))
   );
 
-  // Derive some fee accounts.
+  // Derive the fee accounts.
   const pdas = await Promise.all(
     shardNumbers.map(
       async (shard) =>
