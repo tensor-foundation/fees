@@ -16,7 +16,7 @@ export type FeesProgramError =
   | typeof FEES_PROGRAM_ERROR__MISMATCHED_SEEDS_AND_ACCOUNTS;
 
 let feesProgramErrorMessages: Record<FeesProgramError, string> | undefined;
-if (__DEV__) {
+if (process.env.NODE_ENV !== 'production') {
   feesProgramErrorMessages = {
     [FEES_PROGRAM_ERROR__ARITHMETIC_ERROR]: `Arithmetic error`,
     [FEES_PROGRAM_ERROR__MISMATCHED_SEEDS_AND_ACCOUNTS]: `Number of seeds and accounts do not match`,
@@ -24,9 +24,9 @@ if (__DEV__) {
 }
 
 export function getFeesProgramErrorMessage(code: FeesProgramError): string {
-  if (__DEV__) {
+  if (process.env.NODE_ENV !== 'production') {
     return (feesProgramErrorMessages as Record<FeesProgramError, string>)[code];
   }
 
-  return 'Error message not available in production bundles. Compile with `__DEV__` set to true to see more information.';
+  return 'Error message not available in production bundles.';
 }

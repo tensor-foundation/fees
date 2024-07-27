@@ -42,10 +42,11 @@
     "@ava/typescript": "^4.1.0",
     "@solana/eslint-config-solana": "^3.0.0",
     "@solana/webcrypto-ed25519-polyfill": "2.0.0-preview.3",
-    "@tensor-foundation/test-helpers": "0.0.5",
+    "@tensor-foundation/test-helpers": "0.1.0",
+    "@types/node": "^20.14.12",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "@types/uuid": "^9.0.8",
     "ava": "^6.1.2",
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
@@ -58,7 +59,9 @@
     "ws": "^8.14.0"
   },
   "ava": {
-    "nodeArguments": ["--no-warnings"],
+    "nodeArguments": [
+      "--no-warnings"
+    ],
     "require": [
       "@solana/webcrypto-ed25519-polyfill"
     ],

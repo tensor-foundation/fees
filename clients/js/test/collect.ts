@@ -1,23 +1,21 @@
 import {
-  generateKeyPairSigner,
   Address,
   address,
   airdropFactory,
   appendTransactionMessageInstruction,
+  generateKeyPairSigner,
   getAddressEncoder,
   lamports,
   pipe,
 } from '@solana/web3.js';
-import test from 'ava';
-import { FeeSeeds, findFeeVaultPda, getCollectInstruction } from '../src';
 import {
   createDefaultSolanaClient,
-  generateKeyPairSignerWithSol,
-} from './_setup.js';
-import {
   createDefaultTransaction,
+  generateKeyPairSignerWithSol,
   signAndSendTransaction,
 } from '@tensor-foundation/test-helpers';
+import test from 'ava';
+import { FeeSeeds, findFeeVaultPda, getCollectInstruction } from '../src';
 
 const getShardNumber = (address: Address) => {
   return getAddressEncoder().encode(address)[31];
