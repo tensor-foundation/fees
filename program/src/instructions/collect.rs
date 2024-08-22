@@ -4,10 +4,7 @@ use anchor_lang::prelude::*;
 use anchor_lang::solana_program::{program::invoke_signed, system_instruction};
 
 use crate::state::FeeSeeds;
-use crate::{
-    error::FeesProgramError,
-    state::{KEEP_ALIVE_LAMPORTS, TREASURY},
-};
+use crate::{error::FeesProgramError, state::TREASURY};
 
 /// Permissionless fee crank that collects fees from fee vault accounts and sends them
 /// to the Tensor Foundation treasury.
@@ -31,6 +28,7 @@ pub fn process_collect<'info>(
     ctx: Context<'_, '_, '_, 'info, Collect<'info>>,
     seeds: &[FeeSeeds],
 ) -> Result<()> {
+    let rent = Rent::get()?;
     let treasury = &ctx.accounts.treasury.to_account_info();
     let treasury_pubkey = treasury.key();
 
@@ -52,7 +50,7 @@ pub fn process_collect<'info>(
 
         let lamports = account
             .lamports()
-            .checked_sub(KEEP_ALIVE_LAMPORTS)
+            .checked_sub(rent.minimum_balance(0))
             .ok_or(FeesProgramError::ArithmeticError)?;
 
         msg!(
