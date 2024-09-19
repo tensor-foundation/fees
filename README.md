@@ -17,6 +17,14 @@ This project contains the following clients:
 - [JavaScript](./clients/js/README.md)
 - [Rust](./clients/rust/README.md)
 
+## Status
+
+The new Fees program is currently deployed to devnet, and will be deployed to mainnet on October 2nd.
+
+| Devnet | Mainnet |
+| ------ | ------- |
+| v0.1.0 | -       |
+
 ## Contributing
 
 Check out the [Contributing Guide](./CONTRIBUTING.md) the learn more about how to contribute to this project.
