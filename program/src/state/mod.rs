@@ -1,8 +1,8 @@
 use anchor_lang::prelude::*;
 use solana_program::pubkey;
 
-// TODO: replace with actual treasury address.
-pub const TREASURY: Pubkey = pubkey!("Hnozy7VdXR1ua2FZQyvxRgoCbn2dnpVZh3vZN9BMzDea");
+// Tensor Protocol Foundation Fees Squads: https://v3.squads.so/dashboard/R3FMN1J5aFJTdWY2TDI3RUNITkN6Y3h0M3B4YjhUcWhENktoS3JMNkw0Q28=
+pub const TREASURY: Pubkey = pubkey!("243cQR2jrZQHQjReVpmq3DjPbqerJZEw7texPYudrfko");
 
 #[derive(AnchorSerialize, AnchorDeserialize, Debug, Clone)]
 pub struct FeeSeeds {
