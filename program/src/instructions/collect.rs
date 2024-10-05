@@ -22,10 +22,13 @@ pub struct Collect<'info> {
     // n fee accounts in remaining accounts
     // where the accounts are derived from the passed in
     // indices and bumps, in order
+
+    // TODO: I guess we're okay with having no signers
 }
 
 pub fn process_collect<'info>(
     ctx: Context<'_, '_, '_, 'info, Collect<'info>>,
+    // TODO: curious, why do we pass this in as an argument rather than having an internal state? Just because we dont know how many shards there will be?
     seeds: &[FeeSeeds],
 ) -> Result<()> {
     let rent = Rent::get()?;
@@ -50,6 +53,7 @@ pub fn process_collect<'info>(
 
         let lamports = account
             .lamports()
+            // TODO: is there a world wher esomeone writes data to one of these acc? I guess not right coz it's a pda.
             .checked_sub(rent.minimum_balance(0))
             .ok_or(FeesProgramError::ArithmeticError)?;
 
@@ -60,6 +64,7 @@ pub fn process_collect<'info>(
         );
 
         // Fee account is a "ghost PDA"--owned by the system program, so requires a system transfer.
+        // TODO: I suppose this is enough to verify that it's a PDA, since otherwise signing would not work
         invoke_signed(
             &system_instruction::transfer(&account.key(), &treasury_pubkey, lamports),
             &[account.clone(), treasury.clone()],
