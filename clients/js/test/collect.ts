@@ -27,7 +27,7 @@ const KEEP_ALIVE_LAMPORTS = 890880n;
 test('it can collect fees from sharded fee accounts', async (t) => {
   const client = createDefaultSolanaClient();
   const payer = await generateKeyPairSignerWithSol(client);
-  const treasury = address('Hnozy7VdXR1ua2FZQyvxRgoCbn2dnpVZh3vZN9BMzDea');
+  const treasury = address('243cQR2jrZQHQjReVpmq3DjPbqerJZEw7texPYudrfko');
 
   const treasuryStartBalance = (await client.rpc.getBalance(treasury).send())
     .value;
