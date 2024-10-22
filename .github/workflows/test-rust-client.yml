@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v4
-        
+
       - name: Setup SSH agent
         uses: tensor-foundation/actions/ssh-agent@v1
         with:
@@ -28,7 +28,7 @@ jobs:
           toolchain: ${{ env.RUST_VERSION }}
 
       - name: Install Solana
-        uses: tensor-foundation/actions/install-solana@v2
+        uses: tensor-foundation/actions/install-solana@v2.1
         with:
           version: ${{ env.SOLANA_VERSION }}
           cache: ${{ env.CACHE }}
