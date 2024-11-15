@@ -94,12 +94,12 @@ test('it can collect fees from sharded fee accounts', async (t) => {
   for (const v of vaults) {
     const balance = (await client.rpc.getBalance(v).send()).value;
     // Only keep-alive state bond left.
-    t.assert(balance === KEEP_ALIVE_LAMPORTS, 'Vault balance is correct');
+    t.assert(balance === KEEP_ALIVE_LAMPORTS, 'Vault balance is incorrect');
   }
 
   // Check that the treasury balance is the correct amount higher than the start balance.
   t.assert(
     treasuryBalance === treasuryStartBalance + ONE_SOL * BigInt(vaults.length),
-    'Treasury balance is correct'
+    'Treasury balance is incorrect'
   );
 });

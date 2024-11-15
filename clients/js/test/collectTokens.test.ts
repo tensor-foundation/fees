@@ -141,13 +141,13 @@ test('it can collect fees from sharded fee token accounts', async (t) => {
   for (const token of tokens) {
     const balance = (await fetchToken(client.rpc, token)).data.amount;
     // Empty balance
-    t.assert(balance === 0n, 'Vault balance is correct');
+    t.assert(balance === 0n, 'Vault ATA balance is incorrect');
   }
 
   // Check that the treasury balance is the correct amount higher than the start balance.
   t.assert(
     treasuryAtaBalance ===
       treasuryAtaStartBalance + AMOUNT * BigInt(tokens.length),
-    'Treasury balance is correct'
+    'Treasury balance is incorrect'
   );
 });

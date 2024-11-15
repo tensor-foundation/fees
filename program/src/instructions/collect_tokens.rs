@@ -9,8 +9,8 @@ use tensor_toolbox::token_2022::transfer::transfer_checked;
 use crate::state::FeeSeeds;
 use crate::{error::FeesProgramError, state::TREASURY};
 
-/// Permissionless fee crank that collects fees from fee vault accounts and sends them
-/// to the Tensor Foundation treasury.
+/// Permissionless fee crank that collects fees from fee vault token accounts and sends them
+/// to the Tensor Foundation treasury ATA.
 #[derive(Accounts)]
 pub struct CollectTokens<'info> {
     #[account(mut)]
