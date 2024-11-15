@@ -19,4 +19,11 @@ pub mod fees_program {
     ) -> Result<()> {
         process_collect(ctx, &seeds)
     }
+
+    pub fn collect_tokens<'info>(
+        ctx: Context<'_, '_, '_, 'info, CollectTokens<'info>>,
+        seeds: Vec<FeeSeeds>,
+    ) -> Result<()> {
+        process_collect_tokens(ctx, &seeds)
+    }
 }

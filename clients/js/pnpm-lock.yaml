@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@solana-program/token':
+        specifier: ^0.4.1
+        version: 0.4.1(@solana/web3.js@2.0.0-preview.3(fastestsmallesttextencoderdecoder@1.0.22)(ws@8.18.0))
       '@solana/web3.js':
         specifier: 2.0.0-preview.3
         version: 2.0.0-preview.3(fastestsmallesttextencoderdecoder@1.0.22)(ws@8.18.0)
@@ -390,6 +393,11 @@ packages:
     resolution: {integrity: sha512-2W3ylIdgwx/5k4P2RB/tvOhZD08GSQ86Iakxl/k280V5swM7wX8JwUgWSxpQOBl10tQmuA3EYleGkcrdCYyepg==}
     peerDependencies:
       '@solana/web3.js': 2.0.0-preview.4
+
+  '@solana-program/token@0.4.1':
+    resolution: {integrity: sha512-eSYmjsapzE9jXT2J9xydlMj/zsangMEIZAy9dy75VCXM6kgDCSnH5R7+HsIoKOTvb2VggU7GojC+YhMwWGCIBw==}
+    peerDependencies:
+      '@solana/web3.js': ^2.0.0
 
   '@solana/accounts@2.0.0-preview.3':
     resolution: {integrity: sha512-30GCO7SF3VRYqsumfCTW4bJ1fK67KwX62ZSi6nlU3+6ni4ZmmCT4jPYcqoBgO1kUzDJ4UORNeh/PbdFfbCA0FA==}
@@ -2180,6 +2188,10 @@ snapshots:
       '@solana/web3.js': 2.0.0-preview.3(fastestsmallesttextencoderdecoder@1.0.22)(ws@8.18.0)
 
   '@solana-program/token@0.2.0(@solana/web3.js@2.0.0-preview.3(fastestsmallesttextencoderdecoder@1.0.22)(ws@8.18.0))':
+    dependencies:
+      '@solana/web3.js': 2.0.0-preview.3(fastestsmallesttextencoderdecoder@1.0.22)(ws@8.18.0)
+
+  '@solana-program/token@0.4.1(@solana/web3.js@2.0.0-preview.3(fastestsmallesttextencoderdecoder@1.0.22)(ws@8.18.0))':
     dependencies:
       '@solana/web3.js': 2.0.0-preview.3(fastestsmallesttextencoderdecoder@1.0.22)(ws@8.18.0)
 
