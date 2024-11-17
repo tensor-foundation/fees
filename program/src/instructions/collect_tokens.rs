@@ -51,10 +51,9 @@ pub fn process_collect_tokens<'info>(
 
     let (fee_accounts, token_accounts) = ctx.remaining_accounts.split_at(seeds.len());
 
-    if token_accounts.len() != fee_accounts.len() && token_accounts.len() != seeds.len() {
+    if token_accounts.len() != fee_accounts.len() || token_accounts.len() != seeds.len() {
         return Err(FeesProgramError::MismatchedSeedsAndAccounts.into());
     }
-
     let decimals = ctx.accounts.mint.decimals;
 
     msg!("Received {} fee accounts", fee_accounts.len());
@@ -72,6 +71,15 @@ pub fn process_collect_tokens<'info>(
         let token =
             TokenAccount::try_deserialize_unchecked(&mut &**token_account.try_borrow_data()?)?;
         let amount = token.amount;
+
+        require!(
+            token.mint == ctx.accounts.mint.key(),
+            FeesProgramError::MismatchedMint
+        );
+        require!(
+            token.owner == fee_account.key(),
+            FeesProgramError::MismatchedOwner
+        );
 
         let transfer_ctx = CpiContext::new(
             ctx.accounts.token_program.to_account_info(),

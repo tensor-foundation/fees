@@ -121,6 +121,16 @@
       "code": 6001,
       "name": "MismatchedSeedsAndAccounts",
       "msg": "Number of seeds and accounts do not match"
+    },
+    {
+      "code": 6002,
+      "name": "MismatchedMint",
+      "msg": "Mismatched mint"
+    },
+    {
+      "code": 6003,
+      "name": "MismatchedOwner",
+      "msg": "Mismatched owner"
     }
   ],
   "metadata": {
