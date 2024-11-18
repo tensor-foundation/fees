@@ -1,9 +1,9 @@
 #!/usr/bin/env zx
-import "zx/globals";
-import * as k from "kinobi";
 import { rootNodeFromAnchor } from "@kinobi-so/nodes-from-anchor";
 import { renderVisitor as renderJavaScriptVisitor } from "@kinobi-so/renderers-js";
 import { renderVisitor as renderRustVisitor } from "@kinobi-so/renderers-rust";
+import * as k from "kinobi";
+import "zx/globals";
 import { getAllProgramIdls } from "./utils.mjs";
 
 // Instanciate Kinobi.
@@ -39,6 +39,23 @@ kinobi.update(
           isWritable: true
         })
       ]
+    },
+    collectTokens: {
+      remainingAccounts: [
+        k.instructionRemainingAccountsNode(k.argumentValueNode("vaults"), {
+          isOptional: false,
+          isSigner: false,
+          isWritable: true
+        }),
+        k.instructionRemainingAccountsNode(
+          k.argumentValueNode("tokenAccounts"),
+          {
+            isOptional: false,
+            isSigner: false,
+            isWritable: true
+          }
+        )
+      ]
     }
   })
 );
@@ -56,6 +73,6 @@ const rustClient = path.join(__dirname, "..", "clients", "rust");
 kinobi.accept(
   renderRustVisitor(path.join(rustClient, "src", "generated"), {
     formatCode: true,
-    crateFolder: rustClient,
+    crateFolder: rustClient
   })
 );

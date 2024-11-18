@@ -12,7 +12,10 @@ import {
   getBytesEncoder,
   type Address,
 } from '@solana/web3.js';
-import { type ParsedCollectInstruction } from '../instructions';
+import {
+  type ParsedCollectInstruction,
+  type ParsedCollectTokensInstruction,
+} from '../instructions';
 
 export const FEES_PROGRAM_PROGRAM_ADDRESS =
   'TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A' as Address<'TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A'>;
@@ -43,6 +46,7 @@ export function identifyFeesProgramAccount(
 
 export enum FeesProgramInstruction {
   Collect,
+  CollectTokens,
 }
 
 export function identifyFeesProgramInstruction(
@@ -61,6 +65,17 @@ export function identifyFeesProgramInstruction(
   ) {
     return FeesProgramInstruction.Collect;
   }
+  if (
+    containsBytes(
+      data,
+      fixEncoderSize(getBytesEncoder(), 8).encode(
+        new Uint8Array([161, 0, 215, 226, 185, 222, 233, 109])
+      ),
+      0
+    )
+  ) {
+    return FeesProgramInstruction.CollectTokens;
+  }
   throw new Error(
     'The provided instruction could not be identified as a feesProgram instruction.'
   );
@@ -68,6 +83,10 @@ export function identifyFeesProgramInstruction(
 
 export type ParsedFeesProgramInstruction<
   TProgram extends string = 'TFEEgwDP6nn1s8mMX2tTNPPz8j2VomkphLUmyxKm17A',
-> = {
-  instructionType: FeesProgramInstruction.Collect;
-} & ParsedCollectInstruction<TProgram>;
+> =
+  | ({
+      instructionType: FeesProgramInstruction.Collect;
+    } & ParsedCollectInstruction<TProgram>)
+  | ({
+      instructionType: FeesProgramInstruction.CollectTokens;
+    } & ParsedCollectTokensInstruction<TProgram>);

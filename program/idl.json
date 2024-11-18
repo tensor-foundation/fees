@@ -29,6 +29,59 @@
           }
         }
       ]
+    },
+    {
+      "name": "collectTokens",
+      "accounts": [
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "treasury",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Fee destination account"
+          ]
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "treasuryTa",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seeds",
+          "type": {
+            "vec": {
+              "defined": "FeeSeeds"
+            }
+          }
+        }
+      ]
     }
   ],
   "accounts": [
@@ -68,6 +121,16 @@
       "code": 6001,
       "name": "MismatchedSeedsAndAccounts",
       "msg": "Number of seeds and accounts do not match"
+    },
+    {
+      "code": 6002,
+      "name": "MismatchedMint",
+      "msg": "Mismatched mint"
+    },
+    {
+      "code": 6003,
+      "name": "MismatchedOwner",
+      "msg": "Mismatched owner"
     }
   ],
   "metadata": {

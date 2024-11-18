@@ -6,5 +6,7 @@
 //!
 
 pub(crate) mod r#collect;
+pub(crate) mod r#collect_tokens;
 
 pub use self::r#collect::*;
+pub use self::r#collect_tokens::*;

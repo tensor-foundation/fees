@@ -16,6 +16,12 @@ pub enum FeesProgramError {
     /// 6001 - Number of seeds and accounts do not match
     #[error("Number of seeds and accounts do not match")]
     MismatchedSeedsAndAccounts = 0x1771,
+    /// 6002 - Mismatched mint
+    #[error("Mismatched mint")]
+    MismatchedMint = 0x1772,
+    /// 6003 - Mismatched owner
+    #[error("Mismatched owner")]
+    MismatchedOwner = 0x1773,
 }
 
 impl solana_program::program_error::PrintProgramError for FeesProgramError {

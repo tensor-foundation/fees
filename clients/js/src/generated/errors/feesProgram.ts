@@ -10,15 +10,23 @@
 export const FEES_PROGRAM_ERROR__ARITHMETIC_ERROR = 0x1770; // 6000
 /** MismatchedSeedsAndAccounts: Number of seeds and accounts do not match */
 export const FEES_PROGRAM_ERROR__MISMATCHED_SEEDS_AND_ACCOUNTS = 0x1771; // 6001
+/** MismatchedMint: Mismatched mint */
+export const FEES_PROGRAM_ERROR__MISMATCHED_MINT = 0x1772; // 6002
+/** MismatchedOwner: Mismatched owner */
+export const FEES_PROGRAM_ERROR__MISMATCHED_OWNER = 0x1773; // 6003
 
 export type FeesProgramError =
   | typeof FEES_PROGRAM_ERROR__ARITHMETIC_ERROR
+  | typeof FEES_PROGRAM_ERROR__MISMATCHED_MINT
+  | typeof FEES_PROGRAM_ERROR__MISMATCHED_OWNER
   | typeof FEES_PROGRAM_ERROR__MISMATCHED_SEEDS_AND_ACCOUNTS;
 
 let feesProgramErrorMessages: Record<FeesProgramError, string> | undefined;
 if (process.env.NODE_ENV !== 'production') {
   feesProgramErrorMessages = {
     [FEES_PROGRAM_ERROR__ARITHMETIC_ERROR]: `Arithmetic error`,
+    [FEES_PROGRAM_ERROR__MISMATCHED_MINT]: `Mismatched mint`,
+    [FEES_PROGRAM_ERROR__MISMATCHED_OWNER]: `Mismatched owner`,
     [FEES_PROGRAM_ERROR__MISMATCHED_SEEDS_AND_ACCOUNTS]: `Number of seeds and accounts do not match`,
   };
 }
