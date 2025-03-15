@@ -1,6 +1,6 @@
 {
   "name": "@tensor-foundation/fees",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Fees PDA and collection program",
   "sideEffects": false,
   "module": "./dist/src/index.mjs",
@@ -36,14 +36,14 @@
   "author": "Tensor Protocol Foundation <maintainers@tensor.foundation>",
   "license": "Apache-2.0",
   "dependencies": {
-    "@solana-program/token": "^0.4.1",
-    "@solana/web3.js": "2.0.0-preview.3"
+    "@solana-program/token": "^0.5.1",
+    "@solana/web3.js": "2.0.0"
   },
   "devDependencies": {
     "@ava/typescript": "^4.1.0",
     "@solana/eslint-config-solana": "^3.0.0",
-    "@solana/webcrypto-ed25519-polyfill": "2.0.0-preview.3",
-    "@tensor-foundation/test-helpers": "0.1.0",
+    "@solana/webcrypto-ed25519-polyfill": "2.0.0",
+    "@tensor-foundation/test-helpers": "1.0.0-beta.2",
     "@types/node": "^20.14.12",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
