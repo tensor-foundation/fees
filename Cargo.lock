@@ -905,7 +905,7 @@ checksum = "835a3dc7d1ec9e75e2b5fb4ba75396837112d2060b03f7d43bc1897c7f7211da"
 
 [[package]]
 name = "fees-program"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "anchor-lang",
  "anchor-spl",
@@ -2345,9 +2345,9 @@ dependencies = [
 
 [[package]]
 name = "tensor-toolbox"
-version = "0.7.0"
+version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "52a481d54755891c445752193429802d8e7bcb48ab9d3cc5238f2cb3f032b010"
+checksum = "43285c2352ece2be5389708c13ff2241f6c12cb046ff9ef8c8d9bc831cdb6d65"
 dependencies = [
  "anchor-lang",
  "anchor-spl",
